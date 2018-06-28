@@ -1,0 +1,6 @@
+.idea/
+.idea/workspace.xml
+*.pyc
+converted_notebook.py
+data_science.ipynb
+classifier.pkl
