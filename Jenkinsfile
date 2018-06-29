@@ -26,7 +26,7 @@ pipeline {
 
                 steps {
                     script {
-                        def dataScienceCommitVars = checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${env.DATA_SCIENCE_PATH}"]], submoduleCfg: [], userRemoteConfigs: [[url: "${env.DATA_SCIENCE_GIT}"]]])
+                        dataScienceCommitVars = checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${env.DATA_SCIENCE_PATH}"]], submoduleCfg: [], userRemoteConfigs: [[url: "${env.DATA_SCIENCE_GIT}"]]])
                         echo dataScienceCommitVars.GIT_COMMIT
                         DATA_SCIENCE_GIT_COMMIT_ID = dataScienceCommitVars.GIT_COMMIT
                         env.DATA_SCIENCE_GIT_COMMIT_ID = DATA_SCIENCE_GIT_COMMIT_ID 
