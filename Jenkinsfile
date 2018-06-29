@@ -54,7 +54,7 @@ pipeline {
                     script {
 
                         dir("${env.DATA_ENGINEERING_DIR}") {
-                            docker.withRegistry('https://registry:5000') {
+                            docker.withRegistry('http://registry:5000') {
                                 def engineeringImage = docker.build("hackathon/data_engineering:${dataScienceCommitVars.GIT_COMMIT}")
                                 engineeringImage.push()
                                 engineeringImage.push('latest')
