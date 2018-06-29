@@ -39,7 +39,6 @@ pipeline {
                 }
 
                 steps {
-                    echo "foo"
                     dir("${env.DATA_ENGINEERING_DIR}") {
                         sh "cp ${env.DATA_SCIENCE_PATH}/* ."
                         sh "pip install --no-cache-dir -r ./requirements.txt"
@@ -55,7 +54,7 @@ pipeline {
                     script {
 
                         dir("${env.DATA_ENGINEERING_DIR}") {
-                            docker.withRegistry('https://localhost:5000') {
+                            docker.withRegistry('https://registry:5000') {
                                 def engineeringImage = docker.build("hackathon/data_engineering:${dataScienceCommitVars.GIT_COMMIT}")
                                 engineeringImage.push()
                                 engineeringImage.push('latest')
