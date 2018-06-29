@@ -8,8 +8,6 @@ pipeline {
         DATA_SCIENCE_PATH    = '/var/jenkins_home/workspace/data_science'
         DATA_ENGINEERING_GIT = 'https://github.com/mkesy/data_engineering.git'
         DATA_SCIENCE_GIT     = 'https://github.com/mkesy/data_science.git'
-        DATA_ENGINEERING_GIT_COMMIT_ID = ''
-        DATA_SCIENCE_GIT_COMMIT_ID = ''
      }
 
      stages {
@@ -27,14 +25,9 @@ pipeline {
                 steps {
                     script {
                         dataScienceCommitVars = checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${env.DATA_SCIENCE_PATH}"]], submoduleCfg: [], userRemoteConfigs: [[url: "${env.DATA_SCIENCE_GIT}"]]])
-                        echo dataScienceCommitVars.GIT_COMMIT
-                        DATA_SCIENCE_GIT_COMMIT_ID = dataScienceCommitVars.GIT_COMMIT
-                        env.DATA_SCIENCE_GIT_COMMIT_ID = DATA_SCIENCE_GIT_COMMIT_ID 
                     }
                     script {
-                        def dataEngineeringCommitVArs = checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${env.DATA_ENGINEERING_DIR}"]], submoduleCfg: [], userRemoteConfigs: [[url: "${env.DATA_ENGINEERING_GIT}"]]])
-                        DATA_ENGINEERING_GIT_COMMIT_ID =  dataEngineeringCommitVArs.GIT_COMMIT
-                        env.DATA_ENGINEERING_GIT_COMMIT_ID = DATA_ENGINEERING_GIT_COMMIT_ID  
+                        dataEngineeringCommitVars = checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${env.DATA_ENGINEERING_DIR}"]], submoduleCfg: [], userRemoteConfigs: [[url: "${env.DATA_ENGINEERING_GIT}"]]])
                     }
                 }
             }
@@ -61,11 +54,9 @@ pipeline {
 
                     script {
 
-                        echo dataScienceCommitVars.GIT_COMMIT
-
                         dir("${env.DATA_ENGINEERING_DIR}") {
                             docker.withRegistry('https://localhost:5000') {
-                                def engineeringImage = docker.build("hackathon/data_engineering:${env.DATA_ENGINEERING_GIT_COMMIT_ID}")
+                                def engineeringImage = docker.build("hackathon/data_engineering:${dataScienceCommitVars.GIT_COMMIT}")
                                 engineeringImage.push()
                             }
                             sh "nohup docker run -d --network=hackathoninfra_vn1  --name=decontainer -p 4000:80 hackathon/data_engineering &"
