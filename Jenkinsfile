@@ -6,7 +6,7 @@ pipeline {
 
         DATA_ENGINEERING_DIR = '/var/jenkins_home/workspace/data_engineering'
         DATA_SCIENCE_PATH    = '/var/jenkins_home/workspace/data_science'
-        DATA_ENGINEERING_GIT = 'https://github.com/GrafBlutwurst/data_engineering.git'
+        DATA_ENGINEERING_GIT = 'https://github.com/mkesy/data_engineering.git'
         DATA_SCIENCE_GIT     = 'https://github.com/mkesy/data_science.git'
         DATA_ENGINEERING_GIT_COMMIT_ID = ''
         DATA_SCIENCE_GIT_COMMIT_ID = ''
@@ -26,13 +26,13 @@ pipeline {
 
                 steps {
                     script {
-                        def dataScienceCommitID = checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${env.DATA_SCIENCE_PATH}"]], submoduleCfg: [], userRemoteConfigs: [[url: "${env.DATA_SCIENCE_GIT}"]]]).GIT_COMMIT
-                        DATA_SCIENCE_GIT_COMMIT_ID = dataScienceCommitID
+                        def dataScienceCommitVArs = checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${env.DATA_SCIENCE_PATH}"]], submoduleCfg: [], userRemoteConfigs: [[url: "${env.DATA_SCIENCE_GIT}"]]])
+                        DATA_SCIENCE_GIT_COMMIT_ID = dataScienceCommitVArs.GIT_COMMIT
                         env.DATA_SCIENCE_GIT_COMMIT_ID = DATA_SCIENCE_GIT_COMMIT_ID 
                     }
                     script {
-                        def dataEngineeringCommitID = checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${env.DATA_ENGINEERING_DIR}"]], submoduleCfg: [], userRemoteConfigs: [[url: "${env.DATA_ENGINEERING_GIT}"]]]).GIT_COMMIT
-                        DATA_ENGINEERING_GIT_COMMIT_ID =  dataEngineeringCommitID
+                        def dataEngineeringCommitVArs = checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${env.DATA_ENGINEERING_DIR}"]], submoduleCfg: [], userRemoteConfigs: [[url: "${env.DATA_ENGINEERING_GIT}"]]])
+                        DATA_ENGINEERING_GIT_COMMIT_ID =  dataEngineeringCommitVArs.GIT_COMMIT
                         env.DATA_ENGINEERING_GIT_COMMIT_ID = DATA_ENGINEERING_GIT_COMMIT_ID  
                     }
                 }
