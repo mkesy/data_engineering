@@ -1,5 +1,5 @@
 pipeline {
-
+    
      agent any
 
      environment {
@@ -39,7 +39,7 @@ pipeline {
                 }
 
                 steps {
-
+                    echo "foo"
                     dir("${env.DATA_ENGINEERING_DIR}") {
                         sh "cp ${env.DATA_SCIENCE_PATH}/* ."
                         sh "pip install --no-cache-dir -r ./requirements.txt"
