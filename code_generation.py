@@ -123,6 +123,13 @@ def generate_rest_service_code(converted_notebook_path, is_prediction=false):
     }
 
 
+def str2bool(v):
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
 
 
 
@@ -130,7 +137,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Parse Jupyter notebook path')
     parser.add_argument('path', metavar='path1', type=str, nargs=1, help='Jupyter notebook path')
-    parser.add_argument('is_prediction', metavar='is_prediction1', type=bool, nargs=1, help='True for prediction, False for vectorization')
+    parser.add_argument('is_prediction', metavar='is_prediction1', type=str2bool, nargs=1, help='True for prediction, False for vectorization')
     args = parser.parse_args()
     path = args.path[0]
     is_prediction = args.is_prediction[0]
