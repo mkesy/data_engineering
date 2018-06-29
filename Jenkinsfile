@@ -58,6 +58,7 @@ pipeline {
                             docker.withRegistry('https://localhost:5000') {
                                 def engineeringImage = docker.build("hackathon/data_engineering:${dataScienceCommitVars.GIT_COMMIT}")
                                 engineeringImage.push()
+                                engineeringImage.push('latest')
                             }
                             sh "nohup docker run -d --network=hackathoninfra_vn1  --name=decontainer -p 4000:80 hackathon/data_engineering &"
                         }
